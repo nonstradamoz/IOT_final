@@ -9,8 +9,8 @@ app = Flask(__name__)
 CORS(app)  # Enable Cross-Origin Resource Sharing
 
 # Twilio credentials
-ACCOUNT_SID = 'ACc429df6aea105e33dfb3e01ace0945a9'
-AUTH_TOKEN = '189dac04e15e10c9287a8ef7d7d9af40'
+ACCOUNT_SID = ''
+AUTH_TOKEN = ''
 FROM_PHONE_NUMBER = '+13344234287'
 
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
