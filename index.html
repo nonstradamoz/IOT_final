@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Alert System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://lh.googleusercontent.com/d/1_66-f65GWn-PQpxX6RVlCJ2nrpzrGOPa');
+
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+        
+        .container {
+            background-color: #f0f0f0;
+            padding: 15%;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            flex: 1; /* Fill remaining vertical space */
+            margin-bottom: 20px; /* Space between container and footer */
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .temperature {
+            font-size: 3em;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .alert-status {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #777;
+            text-align: center !important; 
+        }
+        .alert-message {
+            color: #E53935;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: auto; 
+            font-size: 0.8em;
+            color: #999;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #ddd; 
+            position: relative; 
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            function updateTemperature() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get-temperature',
+                    success: function(response) {
+                        if ('temperature' in response && 'alert' in response) {
+                            $('#temperature').text(response.temperature + ' °C');
+                            if (response.alert) {
+                                $('#alertStatus').html('<p class="alert-message">Alert: Temperature is ' + response.temperature + ' °C. Please check.</p>');
+                            } else {
+                                $('#alertStatus').text('Temperature is within safe range.');
+                            }
+                        } else {
+                            console.error('Invalid response format:', response);
+                            $('#temperature').text('Error fetching temperature');
+                            $('#alertStatus').text('Error fetching temperature. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching temperature:', xhr.responseText);
+                        $('#temperature').text('Error fetching temperature');
+                        $('#alertStatus').text('Error fetching temperature. Please try again.');
+                    }
+                });
+            }
+
+            // Call updateTemperature when the page loads
+            updateTemperature();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature Alert System</h1>
+        <p class="temperature" id="temperature">Loading...</p>
+        <div class="alert-status" id="alertStatus">Checking temperature...</div>
+        
+    </div>
+    
+    <div class="footer">
+        <p>Developed by nonstradamoz </p>
+    </div>
+</body>
+</html>
